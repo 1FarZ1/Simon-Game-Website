@@ -6,7 +6,6 @@ let level = 1;
 let gamePattern = [];
 let userClickedPattern = [];
 let buttonColours = ["red", "blue", "green", "yellow"];
-let chosenColor;
 
 
 $(".btn") .on("click", function(event) {
@@ -42,13 +41,11 @@ function Gaming(event) {
       $(event.target).removeClass("pressed");
     }, 100);
 
-    
     let userChosenColor=event.target.id;
     userClickedPattern.push(userChosenColor);
     Anim(userChosenColor);
     playSound(userChosenColor);
- 
-      checkAnswer();
+    checkAnswer();
  
 }
 

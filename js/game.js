@@ -6,10 +6,10 @@ let level = 1;
 let gamePattern = [];
 let userClickedPattern = [];
 let buttonColours = ["red", "blue", "green", "yellow"];
-
+let canPlay=false;
 
 $(".btn") .on("click", function(event) {
-  if(gameStarted){
+  if(gameStarted && canPlay){
     Gaming(event);
   }
   
@@ -41,6 +41,8 @@ function Gaming(event) {
       $(event.target).removeClass("pressed");
     }, 100);
 
+
+
     let userChosenColor=event.target.id;
     userClickedPattern.push(userChosenColor);
     Anim(userChosenColor);
@@ -51,12 +53,15 @@ function Gaming(event) {
 
 
 async function checkAnswer() {
+
   if(userClickedPattern[userClickedPattern.length-1] === gamePattern[userClickedPattern.length-1]) {
     if(userClickedPattern.length === gamePattern.length) {
+    canPlay=false;
     userClickedPattern = [];
     level++;
+    $("#level-title2").text("You Advanced To Level " + level);
+    await sleep(1000);
     $("#level-title2").text("Level " + level);
-    await sleep(200);
     Level();
   }
 }
@@ -89,18 +94,25 @@ function startOver() {
 
 // i guess all correct
 async function  Level () {
+  // spawn a new level 
   Ai();
+
+
+  // play the new level
   for(let i=0;i<gamePattern.length;i++) {
-    console.log(gamePattern[i]);
+    console.log(gamePattern);
     Anim(gamePattern[i]);
     playSound(gamePattern[i]);
+
     await sleep(700);
   }
+  canPlay=true;
 }
 
 
 // All Correct
 function playSound(name) {
+
   var audio = new Audio("sounds/" + name + ".mp3");
   audio.play();
 }
@@ -108,6 +120,7 @@ function playSound(name) {
 
 // All Correct
 function Anim(Color) {
+  console.log("im here")
   $("#" + Color).fadeIn(100).fadeOut(100).fadeIn(100);
 }
 
